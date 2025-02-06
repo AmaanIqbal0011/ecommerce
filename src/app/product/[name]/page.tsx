@@ -3,14 +3,14 @@ import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import AddToCartButton from "./AddToCartButton";
 
-// 1. Generate static params for dynamic routing based on product slugs.
-// export async function generateStaticParams() {
-//   const query = `*[_type == "product"] { "slug": slug.current }`;
-//   const products = await client.fetch(query);
-//   return products.map((product: { slug: string }) => ({
-//     name: product.slug,
-//   }));
-// }
+1. Generate static params for dynamic routing based on product slugs.
+export async function generateStaticParams() {
+  const query = `*[_type == "product"] { "slug": slug.current }`;
+  const products = await client.fetch(query);
+  return products.map((product: { slug: string }) => ({
+    name: product.slug,
+  }));
+}
 
 // 2. Fetch product data based on the slug.
 async function getProductData(slug: string) {

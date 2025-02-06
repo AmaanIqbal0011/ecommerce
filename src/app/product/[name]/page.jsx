@@ -1,3 +1,8 @@
+
+
+
+
+
 // import { urlFor } from "@/sanity/lib/image";
 // import Image from "next/image";
 // import { client } from "@/sanity/lib/client";
@@ -22,7 +27,7 @@
 //   return product;
 // }
 
-// // Updated component without custom PageProps interface
+// // Updated component with proper typing
 // export default async function ProductPage({
 //   params,
 // }: {
@@ -73,9 +78,6 @@
 // }
 
 
-
-
-
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
@@ -85,13 +87,13 @@ import AddToCartButton from "./AddToCartButton";
 export async function generateStaticParams() {
   const query = `*[_type == "product"] { "slug": slug.current }`;
   const products = await client.fetch(query);
-  return products.map((product: { slug: string }) => ({
+  return products.map((product) => ({
     name: product.slug,
   }));
 }
 
 // Fetch product data
-async function getProductData(slug: string) {
+async function getProductData(slug) {
   const query = `*[_type == "product" && slug.current == $slug][0] {
     ...,
     "productImage": productImage.asset->url
@@ -100,12 +102,8 @@ async function getProductData(slug: string) {
   return product;
 }
 
-// Updated component with proper typing
-export default async function ProductPage({
-  params,
-}: {
-  params: { name: string };
-}) {
+// Updated component in JSX
+export default async function ProductPage({ params }) {
   const product = await getProductData(params.name);
 
   if (!product) return <div>Product not found</div>;

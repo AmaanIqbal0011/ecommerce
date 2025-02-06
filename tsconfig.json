@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2018",
+    "types": ["next/types"],
     "lib": [
       "dom",
       "dom.iterable",

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import AddToCartButton from "./AddToCartButton";
 
-// 1. Generate static params for dynamic routing based on product slugs.
+// Generate static params
 export async function generateStaticParams() {
   const query = `*[_type == "product"] { "slug": slug.current }`;
   const products = await client.fetch(query);
@@ -12,7 +12,7 @@ export async function generateStaticParams() {
   }));
 }
 
-// 2. Fetch product data based on the slug.
+// Fetch product data
 async function getProductData(slug: string) {
   const query = `*[_type == "product" && slug.current == $slug][0] {
     ...,
@@ -21,12 +21,13 @@ async function getProductData(slug: string) {
   const product = await client.fetch(query, { slug });
   return product;
 }
-interface PageProps {
-  params: { name: string };
-}
 
-// 4. Updated component with only needed params
-export default async function ProductPage({ params }: PageProps) {
+// Updated component without custom PageProps interface
+export default async function ProductPage({
+  params,
+}: {
+  params: { name: string };
+}) {
   const product = await getProductData(params.name);
 
   if (!product) return <div>Product not found</div>;
@@ -40,7 +41,7 @@ export default async function ProductPage({ params }: PageProps) {
               src={urlFor(product.productImage).url()}
               alt={product.title}
               width={300}
-              height={300}
+              height={200}
               className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
